@@ -39,52 +39,21 @@ async def tweeter():
 
 async def retweeter():
     while True:
-        for tweet in api.user_timeline(screen_name='MerriamWebster', count=6):
-            try:
-                if "#WordOfTheDay" in tweet.text:
-                    print(tweet.text)
-                    tweet.retweet()
-                    print("time until next retweet session: 10000s")
-                    await asyncio.sleep(10000)
 
-                    break
-            except tweepy.TweepError as e:
-                print(e)
+        dict = {'MeriamWebster': '#WordOfTheDay', 'Dictionarycom':'#WordOfTheDay','Thesauruscom':'#SynonymOfTheDay','OED':'Word Of The Day'}
 
-        for tweet in api.user_timeline(screen_name='Dictionarycom', count=5):
-            try:
-                if "#WordOfTheDay" in tweet.text:
-                    print(tweet.text)
-                    tweet.retweet()
-                    print("time until next retweet session: 10000s")
-                    await asyncio.sleep(10000)
-                    break
-            except tweepy.TweepError as e:
-                print(e)
+        for page, keyword in dict.items():
+            for tweet in api.user_timeline(screen_name=page, count=6):
+                try:
+                    if keyword in tweet.text:
+                        print(tweet.text)
+                        tweet.retweet()
+                        print("time until next retweet session: 10000s")
+                        await asyncio.sleep(10000)
 
-        for tweet in api.user_timeline(screen_name='Thesauruscom', count=5):
-            try:
-                if "#SynonymOfTheDay" in tweet.text:
-                    print(tweet.text)
-                    tweet.retweet()
-                    print("time until next retweet session: 10000s")
-                    await asyncio.sleep(10000)
-                    break
-
-            except tweepy.TweepError as e:
-                print(e)
-
-        for tweet in api.user_timeline(screen_name='OED', count=2):
-            try:
-                if "Word of the Day" in tweet.text:
-                    print(tweet.text)
-                    tweet.retweet()
-                    print("time until next retweet session: 10000s")
-                    await asyncio.sleep(10000)
-                    break
-
-            except tweepy.TweepError as e:
-                print(e)
+                        break
+                except tweepy.TweepError as e:
+                    print(e)
 
         await asyncio.sleep(10000)
 
